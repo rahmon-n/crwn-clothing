@@ -1,5 +1,7 @@
 import { applyMiddleware, legacy_createStore as createStore } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
+import { persistStore, persistReducer } from 'redux-persist';
+import storage from 'redux-persist/lib/storage';
 
 import { rootReducer } from './root-reducer';
 
@@ -36,4 +38,14 @@ const middleWares = [customMiddleWares];
 
 const composedEnhancers = composeWithDevTools(applyMiddleware(...middleWares));
 
-export const store = createStore(rootReducer, composedEnhancers);
+const persistConfig = {
+  key: 'root',
+  storage,
+  blacklist: ['user']
+};
+
+const persistedReducer = persistReducer(persistConfig, rootReducer);
+
+export const store = createStore(persistedReducer, composedEnhancers);
+
+export const persistedStore = persistStore(store);
