@@ -1,11 +1,16 @@
-import { applyMiddleware, legacy_createStore as createStore } from 'redux';
+import {
+  applyMiddleware,
+  compose,
+  legacy_createStore as createStore
+} from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
+import thunk from 'redux-thunk';
 
 import { rootReducer } from './root-reducer';
 
-const customMiddleWares = store => next => action => {
+const customMiddleWare = store => next => action => {
   if (!action.type) {
     next(action);
   }
@@ -34,9 +39,15 @@ const customMiddleWares = store => next => action => {
   console.groupEnd('Redux DevTool:');
 };
 
-const middleWares = [customMiddleWares];
+const middleWares = [
+  process.env.NODE_ENV !== 'production' && customMiddleWare,
+  thunk
+].filter(Boolean);
 
-const composedEnhancers = composeWithDevTools(applyMiddleware(...middleWares));
+const composedEnhancer =
+  (process.env.NODE_ENV !== 'production' && composeWithDevTools) || compose;
+
+const composedEnhancers = composedEnhancer(applyMiddleware(...middleWares));
 
 const persistConfig = {
   key: 'root',
