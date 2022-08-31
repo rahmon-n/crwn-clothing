@@ -25,19 +25,15 @@ const SignInForm = () => {
     setFormFields(defaultFormFields);
   };
 
-  const signInWithGoogle = async () => {
+  const signInWithGoogle = () => {
     dispatch(googleSignInStart());
   };
 
-  const handleSubmit = async event => {
+  const handleSubmit = event => {
     event.preventDefault();
 
-    try {
-      dispatch(emailSignInStart(email, password));
-      resetFormFields();
-    } catch (error) {
-      console.log('user sign in failed', error);
-    }
+    dispatch(emailSignInStart(email, password));
+    resetFormFields();
   };
 
   const handleChange = event => {
