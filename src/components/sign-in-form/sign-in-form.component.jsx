@@ -29,11 +29,15 @@ const SignInForm = () => {
     dispatch(googleSignInStart());
   };
 
-  const handleSubmit = event => {
+  const handleSubmit = async event => {
     event.preventDefault();
 
-    dispatch(emailSignInStart(email, password));
-    resetFormFields();
+    try {
+      dispatch(emailSignInStart(email, password));
+      resetFormFields();
+    } catch (error) {
+      console.log('user sign in failed', error);
+    }
   };
 
   const handleChange = event => {
