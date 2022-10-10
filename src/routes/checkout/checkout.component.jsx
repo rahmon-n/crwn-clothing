@@ -1,4 +1,3 @@
-import { CardElement } from '@stripe/react-stripe-js';
 import { useSelector } from 'react-redux';
 
 import CheckoutItem from '../../components/checkout-item/checkout-item.component';
@@ -39,7 +38,7 @@ const Checkout = () => {
           <span>Remove</span>
         </HeaderBlock>
       </CheckoutHeader>
-      {cartItems.map(cartItem => (
+      {cartItems.map((cartItem) => (
         <CheckoutItem key={cartItem.id} cartItem={cartItem} />
       ))}
       <Total>Total: ${cartTotal}</Total>
